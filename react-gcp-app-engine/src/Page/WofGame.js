@@ -235,7 +235,6 @@ function WofGame() {
           setLoading(false);
         });
 
-
       };
 
   // fetch user record
@@ -329,8 +328,6 @@ function WofGame() {
 
     const handleUsernameSubmit = async (event) => {
       event.preventDefault();
-    
-
       if (usernameInput.trim() === '') {
         console.log("Username cannot be empty.");
         return;
@@ -343,12 +340,10 @@ function WofGame() {
         setUsernameInput('');
         return;
       }
-
       console.log("usernameInput:", usernameInput)
       // Assuming you want to update the handle and trigger a fetch
       await callUpdateUserRecord();
       setUsernameInput('');
-      
       setHandle(usernameInput);
       setSubmitted(true);
       
@@ -361,6 +356,7 @@ function WofGame() {
         console.log('will call the save user record');
         callSaveUserRecord();
       }
+      console.log("TEST");
     },[submitted])// This dependency array ensures it re-runs when submitted changes
 
 
@@ -450,6 +446,27 @@ function WofGame() {
       </li>
       ))}
       </div>
+
+      {/* Display Game Records */}
+      <div>
+  <h2>Combined User and Game Records</h2>
+  <ul>
+    {groupedData
+      .flatMap((record) =>
+        record.gameRecords.map((gameRecord) => ({
+          user: record.handle,
+          score: gameRecord.score,
+          date: gameRecord.date,
+        }))
+      )
+      .sort((a, b) => b.score - a.score) // Sort in descending order
+      .map((record, index) => (
+        <li key={index}>
+          Player: {record.user}, Score: {record.score}, Date: {record.date}
+        </li>
+      ))}
+  </ul>
+</div>
     </div>
     
     );
